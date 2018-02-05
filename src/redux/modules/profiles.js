@@ -22,7 +22,7 @@ const getItemsError = error => ({
 
 export const fetchItemsAndUsersProfile = userId => dispatch => {
   dispatch(getItemsLoading()); //Litterally just dispatching this action creators into redux
-  fetch('https://boomtown-server-phil.herokuapp.com/items', {})
+  fetch('https://boomtown-server-phil.herokuapp.com/items')
     .then(response => {
       return response.json();
     })
