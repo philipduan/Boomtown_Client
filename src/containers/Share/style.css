@@ -1,0 +1,25 @@
+.shareComponent {
+  display: grid;
+  grid-template-areas:
+    '. .'
+    'left right '
+    '. .';
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 2fr 1fr;
+  height: 100vh;
+  width: 100vw;
+}
+
+.shareRight {
+  grid-area: right;
+}
+
+.shareRight .content p {
+  color: white;
+}
+
+.shareLeft {
+  grid-area: left;
+  margin: 0 auto;
+  width: 300px;
+}

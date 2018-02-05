@@ -1,0 +1,30 @@
+.items {
+  padding: 1%;
+  width: 100%;
+}
+
+.itemsContainer {
+  width: 100%;
+}
+
+.profile {
+  display: flex;
+}
+
+.react-gravatar {
+  border-radius: 50%;
+}
+
+@media screen and (min-width: 600px) {
+}
+
+@media screen and (min-width: 1024px) {
+  .items {
+    margin: 1em;
+    width: 30%;
+  }
+
+  .itemsContainer {
+    width: 100%;
+  }
+}

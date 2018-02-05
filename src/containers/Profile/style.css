@@ -1,0 +1,33 @@
+.profileCard {
+  padding: 1%;
+  width: 100%;
+}
+
+.profileHead > div {
+  padding: 2rem;
+}
+
+.profileHead .profileMeta {
+  display: grid;
+  grid-template-areas:
+    'owned photo'
+    'borrow photo';
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  width: 100%;
+}
+
+.profileHead .profileMeta .profileOwned {
+  grid-area: owned;
+}
+
+.profileHead .profileMeta .profileBorrowed {
+  grid-area: borrow;
+}
+
+.profileHead .profileMeta .profilePicture {
+  align-self: center;
+  border-radius: 50%;
+  grid-area: photo;
+  justify-self: center;
+}
