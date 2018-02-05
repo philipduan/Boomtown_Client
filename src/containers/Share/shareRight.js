@@ -62,7 +62,7 @@ class ShareRight extends Component {
       created: moment().format('MMMM Do YYYY h:mm:ss SSSS '),
       available: true
     };
-    fetch('http://localhost:3001/items', {
+    fetch('https://boomtown-server-phil.herokuapp.com/items', {
       method: 'POST',
       body: JSON.stringify(data),
       headers: new Headers({

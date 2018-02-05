@@ -31,7 +31,7 @@ const getTagsAndFilter = tags => ({
 export const fetchItemsAndUsers = () => dispatch => {
   dispatch(getItemsLoading()); //Litterally just dispatching this action creators into redux
   console.log('after patching');
-  fetch('http://localhost:3001/items')
+  fetch('https://boomtown-server-phil.herokuapp.com//items')
     .then(response => {
       return response.json();
     })
@@ -48,7 +48,7 @@ export const getTags = tags => dispatch => {
 };
 
 export const patchItemBorrower = data => dispatch => {
-  fetch('http://localhost:3001/items', {
+  fetch('https://boomtown-server-phil.herokuapp.com/items', {
     method: 'PATCH',
     body: JSON.stringify(data),
     headers: new Headers({
@@ -60,7 +60,7 @@ export const patchItemBorrower = data => dispatch => {
       console.log('error', error);
     })
     .then(res => {
-      fetch('http://localhost:3001/items')
+      fetch('https://boomtown-server-phil.herokuapp.com/items')
         .then(response => {
           return response.json();
         })
