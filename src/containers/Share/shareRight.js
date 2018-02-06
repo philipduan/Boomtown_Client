@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import moment from 'moment';
+import { withRouter } from 'react-router-dom';
 import { Step, Stepper, StepLabel, StepContent } from 'material-ui/Stepper';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -13,44 +14,22 @@ class ShareRight extends Component {
     this.state = {
       title: '',
       description: '',
-      imageurl: '',
+      imageurl: 'https://boomtown-server-phil.herokuapp.com/images/item-placeholder.jpg',
       tags: [],
-      itemowner: '',
+      itemowner: '5a78ac5ff36d281a9f567401',
       created: '',
       available: true,
       finished: false,
       stepIndex: 0
     };
 
-    this._handleTitleChange = this._handleTitleChange.bind(this);
-    this._handleDescriptionChange = this._handleDescriptionChange.bind(this);
-    this._handleCategorieChange = this._handleCategorieChange.bind(this);
     this._handleSubmit = this._handleSubmit.bind(this);
     this._handleNext = this._handleNext.bind(this);
     this._handlePrev = this._handlePrev.bind(this);
     this._renderStepActions = this._renderStepActions.bind(this);
   }
 
-  _handleTitleChange(event) {
-    this.setState({
-      title: event.target.value
-    });
-    this.props.onTitleChange(event.target.value);
-  }
 
-  _handleDescriptionChange(event) {
-    this.setState({
-      description: event.target.value
-    });
-    this.props.onDescriptionChange(event.target.value);
-  }
-
-  _handleCategorieChange(event, index, tags) {
-    this.setState({
-      tags
-    });
-    this.props.onTagsChange(tags);
-  }
 
   _handleSubmit() {
     let data = {
@@ -58,8 +37,8 @@ class ShareRight extends Component {
       description: this.state.description,
       imageurl: this.state.imageurl,
       tags: this.state.tags,
-      itemowner: null,
-      created: moment().format('MMMM Do YYYY h:mm:ss SSSS '),
+      itemowner: this.state.itemowner,
+      created: moment().format('YYYY-MM-Do h:mm:ss a'),
       available: true
     };
     fetch('https://boomtown-server-phil.herokuapp.com/items', {
@@ -73,7 +52,10 @@ class ShareRight extends Component {
       .catch(error => {
         console.log('error', error);
       })
-      .then(res => console.log('res', res));
+      .then(res => {
+        console.log('res', res);
+        this.props.history.push('/items')
+      });
   }
   _menuItems(tags) {
     return tags.map(tag => (
@@ -161,7 +143,10 @@ class ShareRight extends Component {
               </p>
               <TextField
                 hintText="Title"
-                onChange={this._handleTitleChange}
+                onChange={event => {
+                  this.setState({ title: event.target.value });
+                  this.props.onTitleChange(event.target.value)
+                }}
                 floatingLabelText="Title"
                 floatingLabelFixed={true}
                 floatingLabelFocusStyle={{ color: 'white' }}
@@ -170,7 +155,10 @@ class ShareRight extends Component {
               <TextField
                 hintText="Description"
                 multiLine={true}
-                onChange={this._handleDescriptionChange}
+                onChange={event => {
+                  this.setState({ description: event.target.value });
+                  this.props.onDescriptionChange(event.target.value)
+                }}
                 floatingLabelText="Description"
                 floatingLabelFixed={true}
                 floatingLabelFocusStyle={{ color: 'white' }}
@@ -187,7 +175,10 @@ class ShareRight extends Component {
                 multiple={true}
                 hintText="Filter by Tag"
                 value={this.state.tags}
-                onChange={this._handleCategorieChange}
+                onChange={(event, index, tags) => {
+                  this.setState({ tags });
+                  this.props.onTagsChange(tags)
+                }}
               >
                 {this._menuItems(tags)}
               </SelectField>
@@ -210,4 +201,4 @@ class ShareRight extends Component {
   }
 }
 
-export default ShareRight;
+export default withRouter(ShareRight);

@@ -16,6 +16,10 @@
 }
 
 @media screen and (min-width: 600px) {
+  .items{
+    margin: 1em;
+    width: 43%;
+  }
 }
 
 @media screen and (min-width: 1024px) {
