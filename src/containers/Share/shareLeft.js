@@ -10,9 +10,7 @@ import {
 import Gravatar from 'react-gravatar';
 import defaultItemPicture from '../../images/item-placeholder.jpg';
 class ShareLeft extends Component {
-  constructor(props) {
-    super(props);
-  }
+
   render() {
     return (
       <div className="shareLeft">

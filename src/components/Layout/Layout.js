@@ -19,7 +19,7 @@ const Layout = ({ children, location, history }) => {
             position: 'fixed',
             right: '20px',
             bottom: '20px',
-            'z-index': '2'
+            zIndex: '2'
           }}
           backgroundColor={'black'}
           onClick={() => history.push('./share')}

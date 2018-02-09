@@ -1,9 +1,17 @@
 import React, { Component } from 'react';
 import FlatButton from 'material-ui/FlatButton';
 import { withRouter } from 'react-router-dom';
+import firebase from '../../containers/firebase/firebase';
 import './style.css';
 
 class Buttons extends Component {
+
+  handleLogOut = () => {
+    firebase.auth().signOut();
+    firebase.auth().onAuthStateChanged(user => console.log(user));
+    this.props.history.push('/');
+  }
+
   render() {
     return (
       <div className="headerButtonWrapper">
@@ -13,9 +21,10 @@ class Buttons extends Component {
           onClick={() => this.props.history.push('/profile')}
         />
         <FlatButton
-          label="LOGIN"
+          label="LOGOUT"
           backgroundColor="black"
           style={{ color: 'white', marginLeft: '1rem' }}
+          onClick={this.handleLogOut}
         />
       </div>
     );

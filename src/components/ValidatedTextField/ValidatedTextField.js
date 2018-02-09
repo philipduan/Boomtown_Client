@@ -18,13 +18,15 @@ const styles = {
     }
 };
 
-const ValidatedTextField = ({ label }) => (
+const ValidatedTextField = ({ label, handleUser, handlePassword }) => (
     <TextField
         style={styles.fieldStyle}
         hintText={label}
         floatingLabelText={label}
         errorStyle={styles.errorStyle}
         underlineFocusStyle={styles.underlineStyle}
+        onChange={label === 'Email' ? event => handleUser(event.target.value) : event => handlePassword(event.target.value)}
+        type={label === 'Email' ? 'text' : 'password'}
     />
 );
 

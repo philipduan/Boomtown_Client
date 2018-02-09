@@ -60,6 +60,12 @@
     right: 0;
 }
 
+.login .error{
+    color: red;
+    text-align: center;
+    width: 100%;
+}
+
 @keyframes parallax-clouds {
     0% {
         transform: translate3d(0px, 0px, 0px);

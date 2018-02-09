@@ -5,7 +5,7 @@ import {
   fetchItemsAndUsers,
   patchItemBorrower
 } from '../../redux/modules/items';
-//import { fetchItemsAndUsersProfile } from '../../redux/modules/profiles';
+import firebase from '../firebase/firebase';
 import Item from './item';
 import './style.css';
 class ItemsContainer extends Component {
@@ -19,8 +19,9 @@ class ItemsContainer extends Component {
   }
 
   componentDidMount() {
+    firebase.auth().onAuthStateChanged(user => user ? null : this.props.history.push('/'));
     this.props.dispatch(fetchItemsAndUsers());
-    //this.props.dispatch(fetchItemsAndUsersProfile());
+
   }
 
   render() {
@@ -29,23 +30,23 @@ class ItemsContainer extends Component {
         <Masonry>
           {this.props.tags.length === 0
             ? this.props.itemsData.map((item, index) => {
-                return (
-                  <Item
-                    key={index}
-                    data={item}
-                    borrowSubmit={this._handleBorrowSubmit}
-                  />
-                );
-              })
-            : this.props.itemsFiltered.map(item => {
-                return (
-                  <Item
-                    key={item.id}
-                    data={item}
-                    borrowSubmit={this._handleBorrowSubmit}
-                  />
-                );
-              })}
+              return (
+                <Item
+                  key={index}
+                  data={item}
+                  borrowSubmit={this._handleBorrowSubmit}
+                />
+              );
+            })
+            : this.props.itemsFiltered.map((item, index) => {
+              return (
+                <Item
+                  key={index}
+                  data={item}
+                  borrowSubmit={this._handleBorrowSubmit}
+                />
+              );
+            })}
         </Masonry>
       </div>
     );

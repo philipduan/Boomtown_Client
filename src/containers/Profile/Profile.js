@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchItemsAndUsersProfile } from '../../redux/modules/profiles';
 import ProfileCard from './ProfileCard';
+import firebase from '../firebase/firebase';
 import './style.css';
 
 class Profile extends Component {
@@ -15,12 +16,8 @@ class Profile extends Component {
   }
 
   componentDidMount() {
+    firebase.auth().onAuthStateChanged(user => user ? null : this.props.history.push('/'))
     this.props.dispatch(fetchItemsAndUsersProfile(this.props.match.params.id));
-    // this.setState({
-    //   user: this.props.user,
-    //   itemsBorrowed: this.getItemsBorrowed(this.props.itemsData),
-    //   itemsOwned: this.getItemsOwned(this.props.itemsData)
-    // });
   }
 
   componentWillReceiveProps(nextProps) {

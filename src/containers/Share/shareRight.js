@@ -19,7 +19,6 @@ class ShareRight extends Component {
       itemowner: '5a78ac5ff36d281a9f567401',
       created: '',
       available: true,
-      finished: false,
       stepIndex: 0
     };
 
@@ -73,7 +72,6 @@ class ShareRight extends Component {
     const { stepIndex } = this.state;
     this.setState({
       stepIndex: stepIndex + 1,
-      finished: stepIndex >= 2
     });
   }
 
@@ -111,7 +109,7 @@ class ShareRight extends Component {
   }
 
   render() {
-    const { finished, stepIndex } = this.state;
+    const { stepIndex } = this.state;
     const tags = [
       { key: 1, value: 1, tag: 'Electronics' },
       { key: 2, value: 2, tag: 'Household Items' },

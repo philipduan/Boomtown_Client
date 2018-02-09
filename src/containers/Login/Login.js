@@ -11,7 +11,7 @@ import logo from '../../images/boomtown-logo.svg';
 import bottomLeft from '../../images/home-bl.svg';
 import topRight from '../../images/home-tr.svg';
 
-const Login = ({ login }) => {
+const Login = ({ login, username, password, disabled, error }) => {
   return (
     <div className="page login">
       <div className="logo">
@@ -26,18 +26,20 @@ const Login = ({ login }) => {
       <div className="cardContainer">
         <Paper zDepth={5}>
           <div className="formContainer">
-            <form onSubmit={login} autoComplete="off">
+            {error ? <p class="error">'Invalid Email or Password'</p> : null}
+            <form onSubmit={event => login(event)} autoComplete="off">
               <div>
-                <ValidatedTextField label="Email" />
+                <ValidatedTextField label="Email" handleUser={username} />
               </div>
               <div>
-                <ValidatedTextField label="Password" />
+                <ValidatedTextField label="Password" handlePassword={password} />
               </div>
               <RaisedButton
                 className="enterButton"
                 primary
                 fullWidth
                 type="submit"
+                disabled={disabled}
               >
                 Enter
               </RaisedButton>

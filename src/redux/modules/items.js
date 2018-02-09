@@ -59,7 +59,7 @@ export const patchItemBorrower = data => dispatch => {
     .catch(error => {
       console.log('error', error);
     })
-    .then(res => {
+    .then(() => {
       fetch('https://boomtown-server-phil.herokuapp.com/items')
         .then(response => {
           return response.json();

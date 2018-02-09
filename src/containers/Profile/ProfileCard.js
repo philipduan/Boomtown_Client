@@ -34,12 +34,12 @@ class ProfileCard extends Component {
           </Card>
         </div>
         <Masonry>
-          {this.props.itemsBorrowed.map(item => {
-            return <Item key={item.id} data={item} />;
+          {this.props.itemsBorrowed.map((item, index) => {
+            return <Item key={index} data={item} />;
           })}
 
-          {this.props.itemsOwned.map(item => {
-            return <Item key={item.id} data={item} />;
+          {this.props.itemsOwned.map((item, index) => {
+            return <Item key={index} data={item} />;
           })}
         </Masonry>
       </div>

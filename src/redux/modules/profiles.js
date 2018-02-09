@@ -1,6 +1,7 @@
 const GET_ITEMS_AND_USERS = 'GET_ITEMS_AND_USERS';
 const GET_ITEMS_LOADING = 'GET_ITEMS_LOADING';
 const GET_ITEMS_ERROR = 'GET_ITEMS_ERROR';
+const SIGN_IN_USER = 'SIGN_IN_USER';
 
 const getItemsAndUsers = (items, userId) => ({
   //Get all items from the database
@@ -20,6 +21,11 @@ const getItemsError = error => ({
   payload: error
 });
 
+const signInUser = userEmail => ({
+  type: SIGN_IN_USER,
+  payload: userEmail
+})
+
 export const fetchItemsAndUsersProfile = userId => dispatch => {
   dispatch(getItemsLoading()); //Litterally just dispatching this action creators into redux
   fetch('https://boomtown-server-phil.herokuapp.com/items')
@@ -33,6 +39,26 @@ export const fetchItemsAndUsersProfile = userId => dispatch => {
       dispatch(getItemsError(error));
     });
 };
+
+export const logInUser = userEmail => dispatch => {
+  let data = {
+    email: userEmail
+  };
+  fetch('https://boomtown-server-phil.herokuapp.com/email', {
+    method: 'POST',
+    body: JSON.stringify(data),
+    headers: new Headers({
+      'Content-Type': 'application/json'
+    })
+  })
+    .then(res => res.json())
+    .then(data => console.log('this is  the data', data))
+    .catch(error => {
+      console.log('error', error);
+    })
+
+}
+
 
 export default (
   state = {

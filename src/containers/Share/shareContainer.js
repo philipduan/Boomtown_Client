@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ShareLeft from './shareLeft';
 import ShareRight from './shareRight';
+import firebase from '../firebase/firebase';
 import './style.css';
 
 class ShareContainer extends Component {
@@ -17,6 +18,9 @@ class ShareContainer extends Component {
     this._handleTags = this._handleTags.bind(this);
   }
 
+  componentDidMount() {
+    firebase.auth().onAuthStateChanged(user => user ? null : this.props.history.push('/'));
+  }
   _handleTitle(title) {
     this.setState({
       title
