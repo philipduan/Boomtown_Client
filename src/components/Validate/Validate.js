@@ -18,7 +18,7 @@ const styles = {
     }
 };
 
-const ValidatedTextField = ({ label, handleUser, handlePassword }) => (
+const LoginField = ({ label, handleUser, handlePassword }) => (
     <TextField
         style={styles.fieldStyle}
         hintText={label}
@@ -30,8 +30,24 @@ const ValidatedTextField = ({ label, handleUser, handlePassword }) => (
     />
 );
 
-ValidatedTextField.propTypes = {
+const BioField = ({ label, handleFullname, handleBio }) => (
+    <TextField
+        style={styles.fieldStyle}
+        hintText={label}
+        floatingLabelText={label}
+        errorStyle={styles.errorStyle}
+        underlineFocusStyle={styles.underlineStyle}
+        onChange={label === 'Full Name' ? event => handleFullname(event.target.value) : event => handleBio(event.target.value)}
+        type={'text'}
+    />
+)
+
+LoginField.propTypes = {
     label: PropTypes.string.isRequired
 };
 
-export default ValidatedTextField;
+
+export {
+    LoginField,
+    BioField
+}
