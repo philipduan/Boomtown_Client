@@ -20,8 +20,9 @@ class Login extends Component {
   state = {
     fullname: '',
     bio: '',
-    username: '',
+    userEmail: '',
     password: '',
+    createEmailError: '',
     error: false,
     open: false,
   }
@@ -29,8 +30,10 @@ class Login extends Component {
   componentDidMount() {
     firebase.auth().onAuthStateChanged(user => user ? this.props.history.push('/items') : null);
   }
-  handleUsername = (username) => {
-    this.setState({ username });
+
+  handleUserEmail = (userEmail) => {
+    const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    re.test(userEmail) ? this.setState({ userEmail, createEmailError: '' }) : this.setState({ createEmailError: 'Invalid email address' });
   }
 
   handlePassword = (password) => {
@@ -38,11 +41,23 @@ class Login extends Component {
   }
 
   handleOpen = () => {
-    this.setState({ open: true });
+    this.setState({
+      fullname: '',
+      bio: '',
+      userEmail: '',
+      password: '',
+      open: true
+    });
   };
 
   handleClose = () => {
-    this.setState({ open: false });
+    this.setState({
+      fullname: '',
+      bio: '',
+      userEmail: '',
+      password: '',
+      open: false
+    });
   };
 
   handleFullname = (fullname) => {
@@ -53,15 +68,41 @@ class Login extends Component {
     this.setState({ bio })
   }
 
+  handleCreateUser = (event) => {
+    event.preventDefault();
+    let data = {
+      email: this.state.userEmail,
+      fullname: this.state.fullname,
+      bio: this.state.bio
+    };
+    firebase.auth().createUserWithEmailAndPassword(this.state.userEmail, this.state.password)
+      .then(() => {
+        fetch('https://boomtown-server-phil.herokuapp.com/users', {
+          method: 'POST',
+          body: JSON.stringify(data),
+          headers: new Headers({
+            'Content-Type': 'application/json'
+          })
+        })
+          .then(res => console.log(res.json()))
+          .catch(error => {
+            console.log('error', error);
+          })
+      })
+      .catch(err => err.code === "auth/email-already-in-use" ? this.setState({ createEmailError: 'Email already taken' }) : null)
+  }
+
   login = (event) => {
     event.preventDefault();
-    firebase.auth().signInWithEmailAndPassword(this.state.username, this.state.password)
+    firebase.auth().signInWithEmailAndPassword(this.state.userEmail, this.state.password)
       .then(user => {
-        console.log(user);
         this.props.dispatch(logInUser(user.email));
         this.props.history.push('/items')
 
-      }).catch(() => this.setState({ error: true }));
+      }).catch((err) => {
+        console.log(err);
+        this.setState({ error: true })
+      });
 
   };
 
@@ -74,10 +115,12 @@ class Login extends Component {
         onClick={this.handleClose}
       />,
       <FlatButton
+        disabled={this.state.userEmail && this.state.password && this.state.fullname ? false : true}
         label="Submit"
         primary={true}
         keyboardFocused={true}
-        onClick={this.handleClose}
+        onClick={this.handleCreateUser}
+        type="button"
       />,
     ];
 
@@ -98,7 +141,7 @@ class Login extends Component {
               {this.state.error ? <p class="error">'Invalid Email or Password'</p> : null}
               <form onSubmit={this.login} autoComplete="off">
                 <div>
-                  <LoginField label="Email" handleUser={this.handleUsername} />
+                  <LoginField label="Email" handleUser={this.handleUserEmail} />
                 </div>
                 <div>
                   <LoginField label="Password" handlePassword={this.handlePassword} />
@@ -108,7 +151,7 @@ class Login extends Component {
                   primary
                   fullWidth
                   type="submit"
-                  disabled={this.state.username ? this.state.password ? false : true : true}
+                  disabled={this.state.userEmail ? this.state.password ? false : true : true}
                 >
                   Sign In
                 </RaisedButton>
@@ -128,10 +171,25 @@ class Login extends Component {
                     open={this.state.open}
                     onRequestClose={this.handleClose}
                   >
-                    <BioField label="Full Name" handleFullname={this.handleFullname} />
-                    <BioField label="Tell us about yourself" handleFullname={this.handleBio} />
-                    <LoginField label="Email" handleUser={this.handleUsername} />
-                    <LoginField label="Password" handlePassword={this.handlePassword} />
+                    <LoginField
+                      label="Email"
+                      errText={this.state.userEmail.length === 0 ? this.state.createEmailError.length === 0 ? 'This field is required' : this.state.createEmailError : this.state.createEmailError}
+                      handleUser={this.handleUserEmail}
+                    />
+                    <LoginField
+                      label="Password"
+                      errText={this.state.password.length < 6 ? 'Your password should be more than 6 characters' : null}
+                      handlePassword={this.handlePassword}
+                    />
+                    <BioField
+                      label="Full Name"
+                      errText={this.state.fullname.length === 0 ? 'This field is required' : null}
+                      handleFullname={this.handleFullname}
+                    />
+                    <BioField
+                      label="Tell us about yourself"
+                      handleBio={this.handleBio}
+                    />
                   </Dialog>
                 </div>
               </form>

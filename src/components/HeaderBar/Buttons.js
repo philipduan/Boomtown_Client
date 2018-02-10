@@ -8,7 +8,6 @@ class Buttons extends Component {
 
   handleLogOut = () => {
     firebase.auth().signOut();
-    firebase.auth().onAuthStateChanged(user => console.log(user));
     this.props.history.push('/');
   }
 

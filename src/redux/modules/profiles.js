@@ -41,21 +41,7 @@ export const fetchItemsAndUsersProfile = userId => dispatch => {
 };
 
 export const logInUser = userEmail => dispatch => {
-  let data = {
-    email: userEmail
-  };
-  fetch('https://boomtown-server-phil.herokuapp.com/email', {
-    method: 'POST',
-    body: JSON.stringify(data),
-    headers: new Headers({
-      'Content-Type': 'application/json'
-    })
-  })
-    .then(res => res.json())
-    .then(data => console.log('this is  the data', data))
-    .catch(error => {
-      console.log('error', error);
-    })
+
 
 }
 

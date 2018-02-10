@@ -18,11 +18,12 @@ const styles = {
     }
 };
 
-const LoginField = ({ label, handleUser, handlePassword }) => (
+const LoginField = ({ label, errText, handleUser, handlePassword }) => (
     <TextField
         style={styles.fieldStyle}
         hintText={label}
         floatingLabelText={label}
+        errorText={errText}
         errorStyle={styles.errorStyle}
         underlineFocusStyle={styles.underlineStyle}
         onChange={label === 'Email' ? event => handleUser(event.target.value) : event => handlePassword(event.target.value)}
@@ -30,11 +31,12 @@ const LoginField = ({ label, handleUser, handlePassword }) => (
     />
 );
 
-const BioField = ({ label, handleFullname, handleBio }) => (
+const BioField = ({ label, errText, handleFullname, handleBio }) => (
     <TextField
         style={styles.fieldStyle}
         hintText={label}
         floatingLabelText={label}
+        errorText={errText}
         errorStyle={styles.errorStyle}
         underlineFocusStyle={styles.underlineStyle}
         onChange={label === 'Full Name' ? event => handleFullname(event.target.value) : event => handleBio(event.target.value)}

@@ -30,7 +30,6 @@ const getTagsAndFilter = tags => ({
 
 export const fetchItemsAndUsers = () => dispatch => {
   dispatch(getItemsLoading()); //Litterally just dispatching this action creators into redux
-  console.log('after patching');
   fetch('https://boomtown-server-phil.herokuapp.com/items')
     .then(response => {
       return response.json();
