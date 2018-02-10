@@ -17,14 +17,17 @@ import bottomLeft from '../../images/home-bl.svg';
 import topRight from '../../images/home-tr.svg';
 class Login extends Component {
 
-  state = {
-    fullname: '',
-    bio: '',
-    userEmail: '',
-    password: '',
-    createEmailError: '',
-    error: false,
-    open: false,
+  constructor(props) {
+    super(props);
+    this.state = {
+      fullname: '',
+      bio: '',
+      userEmail: '',
+      password: '',
+      createEmailError: '',
+      error: false,
+      open: false,
+    }
   }
 
   componentDidMount() {
@@ -84,7 +87,7 @@ class Login extends Component {
             'Content-Type': 'application/json'
           })
         })
-          .then(res => console.log(res.json()))
+          .then(() => this.props.dispatch(logInUser(this.state.userEmail)))
           .catch(error => {
             console.log('error', error);
           })
@@ -96,8 +99,8 @@ class Login extends Component {
     event.preventDefault();
     firebase.auth().signInWithEmailAndPassword(this.state.userEmail, this.state.password)
       .then(user => {
-        this.props.dispatch(logInUser(user.email));
-        this.props.history.push('/items')
+        this.props.dispatch(logInUser(this.state.userEmail));
+        this.props.history.push('/items');
 
       }).catch((err) => {
         console.log(err);

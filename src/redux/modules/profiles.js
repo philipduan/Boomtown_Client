@@ -21,9 +21,9 @@ const getItemsError = error => ({
   payload: error
 });
 
-const signInUser = userEmail => ({
+const signInUser = userId => ({
   type: SIGN_IN_USER,
-  payload: userEmail
+  payload: userId
 })
 
 export const fetchItemsAndUsersProfile = userId => dispatch => {
@@ -41,14 +41,27 @@ export const fetchItemsAndUsersProfile = userId => dispatch => {
 };
 
 export const logInUser = userEmail => dispatch => {
-
-
+  let data = {
+    email: userEmail
+  };
+  fetch('https://boomtown-server-phil.herokuapp.com/email', {
+    method: 'POST',
+    body: JSON.stringify(data),
+    headers: new Headers({
+      'Content-Type': 'application/json'
+    })
+  })
+    .then(res => res.json())
+    .then(id => dispatch(signInUser(id)))
+    .catch(error => {
+      console.log('error', error);
+    })
 }
-
 
 export default (
   state = {
     itemsData: [{}],
+    loggedInUserId: '',
     user: {},
     isLoading: false,
     error: ''
@@ -76,6 +89,11 @@ export default (
         ...state,
         error: action.payload
       };
+    case SIGN_IN_USER:
+      return {
+        ...state,
+        loggedInUserId: action.payload
+      }
     default:
       return { ...state };
   }

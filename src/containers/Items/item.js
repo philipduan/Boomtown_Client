@@ -39,7 +39,7 @@ class Item extends Component {
     let data = {
       id: this.props.data._id,
       available: false,
-      borrower: '5a6b7ad6504b9712482b4959'
+      borrower: this.props.loggedInUserId
     };
     this.props.borrowSubmit(data);
   }
@@ -106,7 +106,7 @@ class Item extends Component {
                 >
                   {`Do you want to request to borrow the "${
                     this.props.data.title
-                  }" from ${this.props.data.itemowner.fullname} ?`}
+                    }" from ${this.props.data.itemowner.fullname} ?`}
                 </Dialog>
               </div>
             ) : null}

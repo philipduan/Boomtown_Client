@@ -35,6 +35,7 @@ class ItemsContainer extends Component {
                   key={index}
                   data={item}
                   borrowSubmit={this._handleBorrowSubmit}
+                  loggedInUserId={this.props.loggedInUserId}
                 />
               );
             })
@@ -44,6 +45,7 @@ class ItemsContainer extends Component {
                   key={index}
                   data={item}
                   borrowSubmit={this._handleBorrowSubmit}
+                  loggedInUserId={this.props.loggedInUserId}
                 />
               );
             })}
@@ -55,9 +57,9 @@ class ItemsContainer extends Component {
 
 const mapsStateToProps = state => ({
   itemsData: state.items.itemsData,
-  isLoading: state.items.isLoading,
   itemsFiltered: state.items.itemsFiltered,
-  tags: state.items.tags
+  tags: state.items.tags,
+  loggedInUserId: state.profiles.loggedInUserId
 });
 
 export default connect(mapsStateToProps)(ItemsContainer);
