@@ -53,6 +53,7 @@ class Profile extends Component {
           user={this.state.user}
           itemsBorrowed={this.state.itemsBorrowed}
           itemsOwned={this.state.itemsOwned}
+          loggedInUserId={this.props.match.params.id}
         />
       );
     } else {

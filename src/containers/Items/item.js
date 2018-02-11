@@ -44,6 +44,15 @@ class Item extends Component {
     this.props.borrowSubmit(data);
   }
 
+  _handleReturn = () => {
+    let data = {
+      id: this.props.data._id,
+      available: true,
+      borrower: null
+    };
+    this.props.handleReturn(data);
+  }
+
   render() {
     const actions = [
       <FlatButton label="Cancel" primary={true} onClick={this._handleClose} />,
@@ -55,7 +64,6 @@ class Item extends Component {
         style={{ color: 'white' }}
       />
     ];
-
     return (
       <div className="items">
         <Card>
@@ -90,7 +98,7 @@ class Item extends Component {
           />
           <CardText>{this.props.data.description}</CardText>
           <CardActions>
-            {this.props.data.available ? (
+            {this.props.data.available && this.props.data.itemowner._id !== this.props.loggedInUserId ? (
               <div>
                 <FlatButton
                   backgroundColor="black"
@@ -109,7 +117,15 @@ class Item extends Component {
                     }" from ${this.props.data.itemowner.fullname} ?`}
                 </Dialog>
               </div>
-            ) : null}
+            ) : this.props.location.pathname.includes('/profile') && this.props.data.itemowner._id !== this.props.loggedInUserId ?
+                <FlatButton
+                  backgroundColor="black"
+                  label="RETURN"
+                  style={{ color: 'white' }}
+                  onClick={this._handleReturn}
+                /> :
+                null
+            }
           </CardActions>
         </Card>
       </div>

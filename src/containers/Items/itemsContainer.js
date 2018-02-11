@@ -11,6 +11,9 @@ import './style.css';
 class ItemsContainer extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      loggedInUserId: '',
+    }
     this._handleBorrowSubmit = this._handleBorrowSubmit.bind(this);
   }
 
@@ -21,7 +24,12 @@ class ItemsContainer extends Component {
   componentDidMount() {
     firebase.auth().onAuthStateChanged(user => user ? null : this.props.history.push('/'));
     this.props.dispatch(fetchItemsAndUsers());
+  }
 
+  componentWillReceiveProps() {
+    this.setState({
+      loggedInUserId: sessionStorage.getItem('id')
+    })
   }
 
   render() {
@@ -35,7 +43,7 @@ class ItemsContainer extends Component {
                   key={index}
                   data={item}
                   borrowSubmit={this._handleBorrowSubmit}
-                  loggedInUserId={this.props.loggedInUserId}
+                  loggedInUserId={this.state.loggedInUserId}
                 />
               );
             })
@@ -45,7 +53,7 @@ class ItemsContainer extends Component {
                   key={index}
                   data={item}
                   borrowSubmit={this._handleBorrowSubmit}
-                  loggedInUserId={this.props.loggedInUserId}
+                  loggedInUserId={this.state.loggedInUserId}
                 />
               );
             })}
@@ -59,7 +67,6 @@ const mapsStateToProps = state => ({
   itemsData: state.items.itemsData,
   itemsFiltered: state.items.itemsFiltered,
   tags: state.items.tags,
-  loggedInUserId: state.profiles.loggedInUserId
 });
 
 export default connect(mapsStateToProps)(ItemsContainer);

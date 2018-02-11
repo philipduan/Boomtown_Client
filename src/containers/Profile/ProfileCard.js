@@ -1,10 +1,20 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import Masonry from 'react-masonry-component';
 import { Card, CardTitle } from 'material-ui/Card';
 import Gravatar from 'react-gravatar';
+import { patchItemBorrower } from '../../redux/modules/items';
 import Item from '../Items/item';
 import './style.css';
 class ProfileCard extends Component {
+  constructor(props) {
+    super(props);
+    this._handleReturn = this._handleReturn.bind(this);
+  }
+
+  _handleReturn(data) {
+    this.props.dispatch(patchItemBorrower(data));
+  }
   render() {
     return (
       <div className="profileCard">
@@ -35,11 +45,11 @@ class ProfileCard extends Component {
         </div>
         <Masonry>
           {this.props.itemsBorrowed.map((item, index) => {
-            return <Item key={index} data={item} />;
+            return <Item key={index} data={item} handleReturn={this._handleReturn} />;
           })}
 
           {this.props.itemsOwned.map((item, index) => {
-            return <Item key={index} data={item} />;
+            return <Item key={index} data={item} loggedInUserId={this.props.loggedInUserId} />;
           })}
         </Masonry>
       </div>
@@ -47,4 +57,4 @@ class ProfileCard extends Component {
   }
 }
 
-export default ProfileCard;
+export default connect(null, null)(ProfileCard);

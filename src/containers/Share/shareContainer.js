@@ -10,7 +10,9 @@ class ShareContainer extends Component {
     this.state = {
       title: '',
       description: '',
-      tags: []
+      tags: [],
+      loggedInUserId: '',
+      email: ''
     };
 
     this._handleTitle = this._handleTitle.bind(this);
@@ -20,6 +22,10 @@ class ShareContainer extends Component {
 
   componentDidMount() {
     firebase.auth().onAuthStateChanged(user => user ? null : this.props.history.push('/'));
+    this.setState({
+      loggedInUserId: sessionStorage.getItem('id'),
+      email: sessionStorage.getItem('email')
+    })
   }
   _handleTitle(title) {
     this.setState({
@@ -38,11 +44,12 @@ class ShareContainer extends Component {
   render() {
     return (
       <div className="shareComponent">
-        <ShareLeft data={this.state} />
+        <ShareLeft data={this.state} loggedInUserId={this.state.loggedInUserId} email={this.state.email} />
         <ShareRight
           onTitleChange={this._handleTitle}
           onDescriptionChange={this._handleDescription}
           onTagsChange={this._handleTags}
+          loggedInUserId={this.state.loggedInUserId}
         />
       </div>
     );

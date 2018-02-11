@@ -10,6 +10,9 @@ import {
 import Gravatar from 'react-gravatar';
 import defaultItemPicture from '../../images/item-placeholder.jpg';
 class ShareLeft extends Component {
+  constructor() {
+    super();
+  }
 
   render() {
     return (
@@ -23,9 +26,9 @@ class ShareLeft extends Component {
               <Gravatar
                 className="profilePicture"
                 size={50}
-                email={`mandi@redacademy.com`}
+                email={this.props.email}
                 onClick={() => {
-                  this.props.history.push('/profile/5a6b7ad6504b9712482b495b');
+                  this.props.history.push(`/profile/${this.props.loggedInUserId}`);
                 }}
               />
             }

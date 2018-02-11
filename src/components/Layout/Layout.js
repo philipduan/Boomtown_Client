@@ -13,7 +13,7 @@ const Layout = ({ children, location, history }) => {
       <div className="appHeader">
         {location.pathname !== '/' ? <HeaderBar /> : null}
       </div>
-      {location.pathname !== '/items' ? null : (
+      {location.pathname === '/items' || location.pathname.includes('profile') ? (
         <FloatingActionButton
           style={{
             position: 'fixed',
@@ -26,7 +26,7 @@ const Layout = ({ children, location, history }) => {
         >
           <ContentAdd />
         </FloatingActionButton>
-      )}
+      ) : null}
       <div className="appContent">{children}</div>
       {/* And a footer here, but not on the login route... */}
     </div>

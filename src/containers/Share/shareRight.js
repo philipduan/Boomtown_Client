@@ -16,7 +16,7 @@ class ShareRight extends Component {
       description: '',
       imageurl: 'https://boomtown-server-phil.herokuapp.com/images/item-placeholder.jpg',
       tags: [],
-      itemowner: '5a78ac5ff36d281a9f567401',
+      itemowner: '',
       created: '',
       available: true,
       stepIndex: 0
@@ -36,7 +36,7 @@ class ShareRight extends Component {
       description: this.state.description,
       imageurl: this.state.imageurl,
       tags: this.state.tags,
-      itemowner: this.state.itemowner,
+      itemowner: this.props.loggedInUserId,
       created: moment().format('YYYY-MM-Do h:mm:ss a'),
       available: true
     };
@@ -87,12 +87,12 @@ class ShareRight extends Component {
     return (
       <div style={{ margin: '12px 0' }}>
         <RaisedButton
-          label={stepIndex === 3 ? 'Confirm' : 'Next'}
+          label={stepIndex === 2 ? 'Confirm' : 'Next'}
           disabled={statement}
           disableTouchRipple={true}
           disableFocusRipple={true}
           primary={true}
-          onClick={stepIndex === 3 ? this._handleSubmit : this._handleNext}
+          onClick={stepIndex === 2 ? this._handleSubmit : this._handleNext}
           style={{ marginRight: 12 }}
         />
         {step > 0 && (
@@ -122,7 +122,7 @@ class ShareRight extends Component {
     return (
       <div className="shareRight">
         <Stepper activeStep={stepIndex} orientation="vertical">
-          <Step>
+          {/* <Step>
             <StepLabel>Add an Image</StepLabel>
             <StepContent className="content">
               <p>
@@ -131,7 +131,7 @@ class ShareRight extends Component {
               </p>
               {this._renderStepActions(0, false)}
             </StepContent>
-          </Step>
+          </Step> */}
           <Step>
             <StepLabel>Add a Title {`&`} Description</StepLabel>
             <StepContent className="content">
@@ -163,7 +163,7 @@ class ShareRight extends Component {
                 value={this.state.description ? this.state.description : null}
               />
               <br />
-              {this._renderStepActions(1, this.state.title ? false : true)}
+              {this._renderStepActions(0, this.state.title ? false : true)}
             </StepContent>
           </Step>
           <Step>
@@ -181,7 +181,7 @@ class ShareRight extends Component {
                 {this._menuItems(tags)}
               </SelectField>
               {this._renderStepActions(
-                2,
+                1,
                 this.state.tags.length !== 0 ? false : true
               )}
             </StepContent>
@@ -190,7 +190,7 @@ class ShareRight extends Component {
             <StepLabel>Confirm Things!</StepLabel>
             <StepContent className="content">
               <p>Great! If you're happy with everything, tap the button</p>
-              {this._renderStepActions(3, false)}
+              {this._renderStepActions(2, false)}
             </StepContent>
           </Step>
         </Stepper>

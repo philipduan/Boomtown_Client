@@ -56,6 +56,7 @@ export const logInUser = userEmail => dispatch => {
   let data = {
     email: userEmail
   };
+  sessionStorage.setItem('email', userEmail);
   fetch('https://boomtown-server-phil.herokuapp.com/email', {
     method: 'POST',
     body: JSON.stringify(data),
@@ -64,7 +65,10 @@ export const logInUser = userEmail => dispatch => {
     })
   })
     .then(res => res.json())
-    .then(id => dispatch(signInUser(id)))
+    .then(id => {
+      dispatch(signInUser(id));
+      sessionStorage.setItem('id', id);
+    })
     .catch(error => {
       console.log('error', error);
     })

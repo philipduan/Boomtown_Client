@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import FlatButton from 'material-ui/FlatButton';
 import { withRouter } from 'react-router-dom';
 import firebase from '../../containers/firebase/firebase';
@@ -8,7 +7,17 @@ import './style.css';
 class Buttons extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      loggedInUserId: '',
+    }
   }
+
+  componentWillReceiveProps() {
+    this.setState({
+      loggedInUserId: sessionStorage.getItem('id')
+    })
+  }
+
   handleLogOut = () => {
     firebase.auth().signOut();
     this.props.history.push('/');
@@ -17,11 +26,13 @@ class Buttons extends Component {
   render() {
     return (
       <div className="headerButtonWrapper">
-        <FlatButton
-          label="MY PROFILE"
-          backgroundColor="rgb(72,198,239)"
-          onClick={() => this.props.history.push(`/profile/${this.props.loggedInUserId}`)}
-        />
+        {this.props.location.pathname !== `/profile/${this.state.loggedInUserId}` ?
+          <FlatButton
+            label="MY PROFILE"
+            backgroundColor="rgb(72,198,239)"
+            onClick={() => this.props.history.push(`/profile/${this.state.loggedInUserId}`)}
+          /> : null}
+
         <FlatButton
           label="LOGOUT"
           backgroundColor="black"
@@ -33,8 +44,6 @@ class Buttons extends Component {
   }
 }
 
-const mapsStateToProps = state => ({
-  loggedInUserId: state.profiles.loggedInUserId
-});
 
-export default connect(mapsStateToProps)(withRouter(Buttons));
+
+export default withRouter(Buttons);
