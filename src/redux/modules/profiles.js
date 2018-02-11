@@ -3,11 +3,11 @@ const GET_ITEMS_LOADING = 'GET_ITEMS_LOADING';
 const GET_ITEMS_ERROR = 'GET_ITEMS_ERROR';
 const SIGN_IN_USER = 'SIGN_IN_USER';
 
-const getItemsAndUsers = (items, userId) => ({
+const getItemsAndUsers = (items, user) => ({
   //Get all items from the database
   type: GET_ITEMS_AND_USERS,
   payloadItems: items,
-  payloadUserId: userId
+  payloadUser: user
 });
 
 const getItemsLoading = () => ({
@@ -33,7 +33,19 @@ export const fetchItemsAndUsersProfile = userId => dispatch => {
       return response.json();
     })
     .then(data => {
-      dispatch(getItemsAndUsers(data, userId));
+      let user = data.find(
+        item => item.itemowner._id === userId
+      );
+      if (user) {
+        user = user.itemowner;
+        dispatch(getItemsAndUsers(data, user));
+      } else {
+        fetch(`https://boomtown-server-phil.herokuapp.com/users/${userId}`)
+          .then(res => res.json())
+          .then(userObj => { dispatch(getItemsAndUsers(data, userObj)); })
+          .catch(err => console.log(err))
+      }
+
     })
     .catch(error => {
       dispatch(getItemsError(error));
@@ -70,13 +82,10 @@ export default (
 ) => {
   switch (action.type) {
     case GET_ITEMS_AND_USERS:
-      const user = action.payloadItems.find(
-        item => item.itemowner._id === action.payloadUserId
-      );
       return {
         ...state,
         itemsData: action.payloadItems,
-        user: user.itemowner,
+        user: action.payloadUser,
         isLoading: false
       };
     case GET_ITEMS_LOADING:
