@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchItemsAndUsersProfile, patchItemBorrower } from '../../redux/modules/profiles';
+import { fetchItemsAndUsersProfile, patchItemBorrower, deleteItemOwned } from '../../redux/modules/profiles';
 import ProfileCard from './ProfileCard';
 import firebase from '../firebase/firebase';
 import './style.css';
@@ -50,6 +50,10 @@ class Profile extends Component {
     this.props.dispatch(patchItemBorrower(data, this.props.match.params.id));
   }
 
+  _handleRemove = data => {
+    this.props.dispatch(deleteItemOwned(data, this.props.match.params.id));
+  }
+
   render() {
     if (this.state.user) {
       return (
@@ -59,6 +63,7 @@ class Profile extends Component {
           itemsOwned={this.state.itemsOwned}
           loggedInUserId={this.props.match.params.id}
           handleReturn={this._handleReturn}
+          handleRemove={this._handleRemove}
         />
       );
     } else {

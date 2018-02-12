@@ -53,6 +53,13 @@ class Item extends Component {
     this.props.handleReturn(data);
   }
 
+  _handleRemove = () => {
+    let data = {
+      id: this.props.data._id,
+    };
+    this.props.handleRemove(data);
+  }
+
   render() {
     const actions = [
       <FlatButton label="Cancel" primary={true} onClick={this._handleClose} />,
@@ -124,7 +131,13 @@ class Item extends Component {
                   style={{ color: 'white' }}
                   onClick={this._handleReturn}
                 /> :
-                null
+                this.props.data.available && this.props.data.itemowner._id === this.props.loggedInUserId && this.props.location.pathname.includes('/profile') ?
+                  <FlatButton
+                    backgroundColor="black"
+                    label="Remove"
+                    style={{ color: 'white' }}
+                    onClick={this._handleRemove}
+                  /> : null
             }
           </CardActions>
         </Card>

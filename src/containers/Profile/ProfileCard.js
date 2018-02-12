@@ -8,14 +8,14 @@ import './style.css';
 class ProfileCard extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      render: true
-    }
-    this._handleReturn = this._handleReturn.bind(this);
   }
 
-  _handleReturn(data) {
+  _handleReturn = (data) => {
     this.props.handleReturn(data);
+  }
+
+  _handleRemove = (data) => {
+    this.props.handleRemove(data)
   }
   render() {
     return (
@@ -51,7 +51,7 @@ class ProfileCard extends Component {
           })}
 
           {this.props.itemsOwned.map((item, index) => {
-            return <Item key={index} data={item} loggedInUserId={this.props.loggedInUserId} />;
+            return <Item key={index} data={item} loggedInUserId={this.props.loggedInUserId} handleRemove={this._handleRemove} />;
           })}
         </Masonry>
       </div>

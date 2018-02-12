@@ -111,6 +111,44 @@ export const patchItemBorrower = (data, userId) => dispatch => {
     });
 };
 
+export const deleteItemOwned = (data, userId) => dispatch => {
+  fetch('https://boomtown-server-phil.herokuapp.com/items', {
+    method: 'DELETE',
+    body: JSON.stringify(data),
+    headers: new Headers({
+      'Content-Type': 'application/json'
+    })
+  })
+    .then(res => res.json())
+    .then(res => console.log(data))
+    .catch(error => {
+      console.log('error', error);
+    })
+    .then(() => {
+      fetch('https://boomtown-server-phil.herokuapp.com/items')
+        .then(response => {
+          return response.json();
+        })
+        .then(data => {
+          let user = data.find(
+            item => item.itemowner._id === userId
+          );
+          if (user) {
+            user = user.itemowner;
+            dispatch(getItemsAndUsers(data, user));
+          } else {
+            fetch(`https://boomtown-server-phil.herokuapp.com/users/${userId}`)
+              .then(res => res.json())
+              .then(userObj => { dispatch(getItemsAndUsers(data, userObj)); })
+              .catch(err => console.log(err))
+          }
+        })
+        .catch(error => {
+          dispatch(getItemsError(error));
+        });
+    });
+};
+
 export default (
   state = {
     itemsData: [{}],
