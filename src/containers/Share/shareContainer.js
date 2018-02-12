@@ -42,6 +42,7 @@ class ShareContainer extends Component {
   }
 
   render() {
+    console.log('share', this.state);
     return (
       <div className="shareComponent">
         <ShareLeft data={this.state} loggedInUserId={this.state.loggedInUserId} email={this.state.email} />

@@ -5,20 +5,9 @@ import firebase from '../../containers/firebase/firebase';
 import './style.css';
 
 class Buttons extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      loggedInUserId: '',
-    }
-  }
-
-  componentWillReceiveProps() {
-    this.setState({
-      loggedInUserId: sessionStorage.getItem('id')
-    })
-  }
 
   handleLogOut = () => {
+    sessionStorage.clear();
     firebase.auth().signOut();
     this.props.history.push('/');
   }
@@ -26,11 +15,11 @@ class Buttons extends Component {
   render() {
     return (
       <div className="headerButtonWrapper">
-        {this.props.location.pathname !== `/profile/${this.state.loggedInUserId}` ?
+        {this.props.location.pathname !== `/profile/${sessionStorage.getItem('id')}` ?
           <FlatButton
             label="MY PROFILE"
             backgroundColor="rgb(72,198,239)"
-            onClick={() => this.props.history.push(`/profile/${this.state.loggedInUserId}`)}
+            onClick={() => this.props.history.push(`/profile/${sessionStorage.getItem('id')}`)}
           /> : null}
 
         <FlatButton

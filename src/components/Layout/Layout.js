@@ -22,7 +22,7 @@ const Layout = ({ children, location, history }) => {
             zIndex: '2'
           }}
           backgroundColor={'black'}
-          onClick={() => history.push('./share')}
+          onClick={() => history.push('/share')}
         >
           <ContentAdd />
         </FloatingActionButton>
