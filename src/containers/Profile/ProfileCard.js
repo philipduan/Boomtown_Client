@@ -3,17 +3,19 @@ import { connect } from 'react-redux';
 import Masonry from 'react-masonry-component';
 import { Card, CardTitle } from 'material-ui/Card';
 import Gravatar from 'react-gravatar';
-import { patchItemBorrower } from '../../redux/modules/items';
 import Item from '../Items/item';
 import './style.css';
 class ProfileCard extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      render: true
+    }
     this._handleReturn = this._handleReturn.bind(this);
   }
 
   _handleReturn(data) {
-    this.props.dispatch(patchItemBorrower(data));
+    this.props.handleReturn(data);
   }
   render() {
     return (
