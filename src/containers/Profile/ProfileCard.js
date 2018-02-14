@@ -47,7 +47,7 @@ class ProfileCard extends Component {
         </div>
         <Masonry>
           {this.props.itemsBorrowed.map((item, index) => {
-            return <Item key={index} data={item} handleReturn={this._handleReturn} />;
+            return <Item key={index} data={item} loggedInUserId={this.props.loggedInUserId} handleReturn={this._handleReturn} />;
           })}
 
           {this.props.itemsOwned.map((item, index) => {

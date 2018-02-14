@@ -3,11 +3,10 @@ const GET_ITEMS_LOADING = 'GET_ITEMS_LOADING';
 const GET_ITEMS_ERROR = 'GET_ITEMS_ERROR';
 const SIGN_IN_USER = 'SIGN_IN_USER';
 
-const getItemsAndUsers = (items, user) => ({
+const getItemsAndUsers = (user) => ({
   //Get all items from the database
   type: GET_ITEMS_AND_USERS,
-  payloadItems: items,
-  payloadUser: user
+  payload: user
 });
 
 const getItemsLoading = () => ({
@@ -28,27 +27,16 @@ const signInUser = userId => ({
 
 export const fetchItemsAndUsersProfile = userId => dispatch => {
   dispatch(getItemsLoading()); //Litterally just dispatching this action creators into redux
-  fetch('https://boomtown-server-phil.herokuapp.com/items')
+  fetch(`https://boomtown-server-phil.herokuapp.com/users/${userId}`)
     .then(response => {
       return response.json();
     })
-    .then(data => {
-      let user = data.find(
-        item => item.itemowner._id === userId
-      );
-      if (user) {
-        user = user.itemowner;
-        dispatch(getItemsAndUsers(data, user));
-      } else {
-        fetch(`https://boomtown-server-phil.herokuapp.com/users/${userId}`)
-          .then(res => res.json())
-          .then(userObj => { dispatch(getItemsAndUsers(data, userObj)); })
-          .catch(err => console.log(err))
-      }
+    .then(user => {
+      dispatch(getItemsAndUsers(user))
 
     })
     .catch(error => {
-      dispatch(getItemsError(error));
+      console.log(error);
     });
 };
 
@@ -82,32 +70,12 @@ export const patchItemBorrower = (data, userId) => dispatch => {
       'Content-Type': 'application/json'
     })
   })
-    .then(res => res)
+    .then(res => { return res.json() })
+    .then(res => {
+      dispatch(fetchItemsAndUsersProfile(res[1]['_id']));
+    })
     .catch(error => {
       console.log('error', error);
-    })
-    .then(() => {
-      fetch('https://boomtown-server-phil.herokuapp.com/items')
-        .then(response => {
-          return response.json();
-        })
-        .then(data => {
-          let user = data.find(
-            item => item.itemowner._id === userId
-          );
-          if (user) {
-            user = user.itemowner;
-            dispatch(getItemsAndUsers(data, user));
-          } else {
-            fetch(`https://boomtown-server-phil.herokuapp.com/users/${userId}`)
-              .then(res => res.json())
-              .then(userObj => { dispatch(getItemsAndUsers(data, userObj)); })
-              .catch(err => console.log(err))
-          }
-        })
-        .catch(error => {
-          dispatch(getItemsError(error));
-        });
     });
 };
 
@@ -119,39 +87,20 @@ export const deleteItemOwned = (data, userId) => dispatch => {
       'Content-Type': 'application/json'
     })
   })
-    .then(res => res.json())
-    .then(res => console.log(data))
+    .then(res => { return res.json() })
+    .then(() => {
+      dispatch(fetchItemsAndUsersProfile(userId));
+    })
     .catch(error => {
       console.log('error', error);
     })
-    .then(() => {
-      fetch('https://boomtown-server-phil.herokuapp.com/items')
-        .then(response => {
-          return response.json();
-        })
-        .then(data => {
-          let user = data.find(
-            item => item.itemowner._id === userId
-          );
-          if (user) {
-            user = user.itemowner;
-            dispatch(getItemsAndUsers(data, user));
-          } else {
-            fetch(`https://boomtown-server-phil.herokuapp.com/users/${userId}`)
-              .then(res => res.json())
-              .then(userObj => { dispatch(getItemsAndUsers(data, userObj)); })
-              .catch(err => console.log(err))
-          }
-        })
-        .catch(error => {
-          dispatch(getItemsError(error));
-        });
-    });
+
 };
 
 export default (
   state = {
-    itemsData: [{}],
+    itemsOwned: [{}],
+    itemsBorrowed: [{}],
     loggedInUserId: '',
     user: {},
     isLoading: false,
@@ -163,8 +112,9 @@ export default (
     case GET_ITEMS_AND_USERS:
       return {
         ...state,
-        itemsData: action.payloadItems,
-        user: action.payloadUser,
+        itemsOwned: action.payload.itemsOwned,
+        itemsBorrowed: action.payload.itemsBorrowed,
+        user: action.payload,
         isLoading: false
       };
     case GET_ITEMS_LOADING:

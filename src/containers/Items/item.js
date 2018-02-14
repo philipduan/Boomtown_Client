@@ -48,7 +48,7 @@ class Item extends Component {
     let data = {
       id: this.props.data._id,
       available: true,
-      borrower: null
+      borrower: this.props.loggedInUserId
     };
     this.props.handleReturn(data);
   }
@@ -106,6 +106,7 @@ class Item extends Component {
           <CardText>{this.props.data.description}</CardText>
           <CardActions>
             {this.props.data.available && this.props.data.itemowner._id !== this.props.loggedInUserId ? (
+
               <div>
                 <FlatButton
                   backgroundColor="black"
@@ -124,14 +125,14 @@ class Item extends Component {
                     }" from ${this.props.data.itemowner.fullname} ?`}
                 </Dialog>
               </div>
-            ) : this.props.location.pathname.includes('/profile') && this.props.data.itemowner._id !== this.props.loggedInUserId ?
+            ) : this.props.location.pathname.includes(`/profile/${sessionStorage.getItem('id')}`) && this.props.data.itemowner._id !== this.props.loggedInUserId ?
                 <FlatButton
                   backgroundColor="black"
                   label="RETURN"
                   style={{ color: 'white' }}
                   onClick={this._handleReturn}
                 /> :
-                this.props.data.available && this.props.data.itemowner._id === this.props.loggedInUserId && this.props.location.pathname.includes('/profile') ?
+                this.props.data.available && this.props.data.itemowner._id === this.props.loggedInUserId && this.props.location.pathname.includes(`/profile/${sessionStorage.getItem('id')}`) ?
                   <FlatButton
                     backgroundColor="black"
                     label="Remove"
