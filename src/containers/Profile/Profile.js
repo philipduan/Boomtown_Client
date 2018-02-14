@@ -14,13 +14,23 @@ class Profile extends Component {
       itemsOwned: []
     };
   }
-
+  componentWillUpdate(nextProps) {
+    console.log('will update ');
+    if (this.props.match.params.id != nextProps.match.params.id) {
+      console.log('inside if will update');
+      this.props.dispatch(fetchItemsAndUsersProfile(nextProps.match.params.id));
+    }
+  }
   componentDidMount() {
+    console.log('did mount');
     firebase.auth().onAuthStateChanged(user => user ? null : this.props.history.push('/'))
     this.props.dispatch(fetchItemsAndUsersProfile(this.props.match.params.id));
   }
 
   componentWillReceiveProps(nextProps) {
+    console.log('will receivev');
+    console.log('this', this.props)
+    console.log('next', nextProps);
     if (this.props.user && this.props.itemsBorrowed && this.props.itemsOwned) {
       if (
         this.props.user !== nextProps.user ||

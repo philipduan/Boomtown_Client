@@ -32,6 +32,7 @@ export const fetchItemsAndUsersProfile = userId => dispatch => {
       return response.json();
     })
     .then(user => {
+      console.log(user);
       dispatch(getItemsAndUsers(user))
 
     })
