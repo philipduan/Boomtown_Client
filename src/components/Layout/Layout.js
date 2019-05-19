@@ -4,7 +4,7 @@ import { withRouter } from "react-router-dom";
 import HeaderBar from "../HeaderBar/HeaderBar";
 import FloatingActionButton from "material-ui/FloatingActionButton";
 import ContentAdd from "material-ui/svg-icons/content/add";
-//testing commit
+//testing commit with new stuff
 import "./styles.css";
 
 const Layout = ({ children, location, history }) => {
